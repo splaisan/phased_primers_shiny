@@ -1,0 +1,10 @@
+name: test_shiny
+title:
+username:
+account: fbonath
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2219806
+bundleId: 3087313
+url: https://fbonath.shinyapps.io/test_shiny/
+when: 1588276277.48901
