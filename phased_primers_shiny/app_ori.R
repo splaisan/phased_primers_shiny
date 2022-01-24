@@ -5,45 +5,39 @@ ui <- fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      sliderInput("phasing", h4("define amount of primer phasing (N-1)"),
+      sliderInput("phasing", h6("define amount of primer phasing"),
                   min = 0, max = 21, value = 0),
       
-      textInput("primer", h4("enter gene specific primer sequence (5'-> 3')"), 
+      textInput("primer", h6("enter gene specific primer sequence (5'-> 3')"), 
                 value = "CCTAHGGGRBGCAGCAG"),
       
-      helpText(strong("standard primer sequences 16S V3/V4 :"), 
+      helpText(strong("standard primer sequences 16S V3/V4:"), 
                p("341-fw: CCTACGGGNGGCWGCAG"), p("805-re: GACTACHVGGGTATCTAATCC"),
-
-      helpText(strong("Note: a 7xN UMI can be added in front")),
-
                br()),
-
-      textInput("adapter", h4("enter Adapter sequence sequence (5'-> 3')"), 
+      textInput("adapter", h6("enter Adapter sequence sequence (5'-> 3')"), 
                 value = "ACACTCTTTCCCTACACGACGCTCTTCCGATCT"),
       
-      helpText(strong("Illumina adapters :"), 
+      helpText(strong("adapter used at NGI:"), 
                p("fw: ACACTCTTTCCCTACACGACGCTCTTCCGATCT"), p("re: GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT"),
                br()),
-
+               
       textInput("prefix", h4("enter a prefix for primer names"),
                 value = "primer"),
       br(),
-
+               
       actionButton("update", h6("get primers")),
-      br(),
-      br(),
-      downloadButton("downloadData", h6("download csv")),
-      h5("code adapted from: "),
-      tags$a(href="https://ngisweden.scilifelab.se/2021/01/tech-note-increase-complexity-of-amplicon-libraries-using-phased-primers/", target="_blank", "NGI Sweden")
+      downloadButton("downloadData", h6("export primers to csv file")),
 
       ),
     mainPanel(
-      #htmlOutput("infotext_upper"),  
-      #imageOutput("prep_setup"),
-      #htmlOutput("infotext_lower"),
+      htmlOutput("infotext_upper"),
+      imageOutput("prep_setup"),
+      htmlOutput("infotext_lower"),
       plotOutput("plotting", inline = TRUE),
       tableOutput("primer_seq")
-	      )
+
+      
+    )
   )
 )
 test <- "test"
@@ -228,7 +222,7 @@ server <- function(input, output){
   output$primer_seq <- renderTable({assembled_primers()})
   output$plotting <- renderPlot({plot_primer()},height = 400, width = 600)
   output$prep_setup <- renderImage({image_prep_setup()}, deleteFile = FALSE)
-
+  
   # Downloadable csv of selected dataset ----
   output$downloadData <- downloadHandler(
     filename = function() {
@@ -238,7 +232,7 @@ server <- function(input, output){
       write.csv(assembled_primers(), file, row.names = FALSE)
     }
   )
-
+  
 }
 
 # Run the app ----
